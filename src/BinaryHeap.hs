@@ -1,9 +1,9 @@
--- Found on the internet. Not sure which standard algorithm this follows.
--- has a left and right subheap and a root element which is biggest. The invariant seems to be that the larger of the 2 subheaps always
+-- Found on the internet. I think it is a (max) binary heap.
+-- Has a left and right subheap and a root element which is biggest. The invariant seems to be that the larger of the 2 subheaps always
 -- contains some element that is the largest of the two subheaps. With equal sizes this is in the left subheap.
--- has O(1) for size and getMax, O(log n) for insert, apparently O(log n) for deleteMax
+-- Has O(1) for size and getMax, O(log n) for insert, apparently O(log n) for deleteMax
 
-module Heap (insert,
+module BinaryHeap (insert,
              size, 
              deleteMax, 
              getMax, 
