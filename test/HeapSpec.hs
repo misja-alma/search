@@ -1,8 +1,8 @@
 module HeapSpec (spec) where
 
 import Test.Hspec
-import BinaryHeap
-
+import SplayHeap
+import qualified Data.Set as Set
 
 test_insert_and_getMax:: Spec
 test_insert_and_getMax =
@@ -37,10 +37,20 @@ test_deleteMax =
       m3 `shouldBe` 2
       getMax h4 `shouldBe` 2
 
+test_from_and_to_list:: Spec
+test_from_and_to_list =
+  describe "fromList and toList" $ do
+    it "give back the same elements after applying both" $ do
+      let h = fromList [1,2,3]
+      let l = toList h
+      Set.fromList l `shouldBe` Set.fromList [1,2,3]
+
+
 spec :: Spec
 spec = do
    test_insert_and_getMax
    test_deleteMax
+   test_from_and_to_list
 
 -- For running the test stand-alone
 main :: IO ()

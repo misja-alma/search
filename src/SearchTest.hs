@@ -9,7 +9,7 @@ import Search
 -- splay heap: 4.7 sec
 test :: IO ()
 test = do
-   let result = aStarSearch (1 :: Int) (\x -> [x+1, x-1]) (<=(-7000000))
+   let result = aStarSearch (1 :: Int) (\x -> [x+1, x-1]) (>=(7000000))
    case result of
      Just x -> putStrLn $ "Solution found: " ++ show x
      Nothing -> putStrLn "No solution found"

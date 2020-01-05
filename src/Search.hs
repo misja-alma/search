@@ -4,7 +4,7 @@ import Data.Maybe
 import qualified Data.Sequence as D
 import qualified Data.Set as S
 import qualified Data.HashSet as HS   -- (NOTE: from hashmap, not from unordered-containers)
-import qualified Data.Heap.Splay as H -- (NOTE: from heaps, not from heap!).
+import qualified BinaryHeap as H -- (NOTE: from heaps, not from heap!).
 import Data.Hashable
 
 dequeue :: D.Seq a -> (a, D.Seq a)
@@ -13,17 +13,17 @@ dequeue sq = let (rest, el) = D.splitAt (D.length sq - 1) sq in (D.index el 0, r
 -- TODO move to Search module
 -- TODO benchmark with other heap implementations. E.g. splay heap, pairing heap, fibonacci heap.
 
-uncons :: H.Heap a -> Maybe (a, H.Heap a)
-uncons h = fmap (\x -> (x, H.deleteMin h)) (H.minimum h)
+uncons :: Ord a => H.Heap a -> (a, H.Heap a)
+uncons h = H.deleteMax h
 
 -- NOTE: uses a heap that is min-based! So the smallest candidate according to the ordering is always selected first.
 aStarSearch :: Hashable a => Ord a => a -> (a -> [a]) -> (a -> Bool) -> Maybe a
 aStarSearch root getChildren matchFunction =
     let queue = H.singleton root
         visited = HS.singleton root
-        (_, _, result) = head $ dropWhile (\(q,_,r) -> not (H.null q) && isNothing r) $ iterate nextCandidate (queue, visited, Nothing) in
+        (_, _, result) = head $ dropWhile (\(q,_,r) -> not (H.isEmpty q) && isNothing r) $ iterate nextCandidate (queue, visited, Nothing) in
     result
-    where nextCandidate (q, v, _) = let Just (candidate, poppedQ) = uncons q in
+    where nextCandidate (q, v, _) = let (candidate, poppedQ) = uncons q in
                                     if matchFunction candidate then (poppedQ, v, Just candidate)
                                     else let children = filter (`HS.notMember` v) (getChildren candidate)
                                              newVisited = HS.union v (HS.fromList children)
