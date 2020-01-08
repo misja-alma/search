@@ -10,7 +10,7 @@ build-type:          Simple
 extra-source-files:  README.md
 
 executable benchmark
-  main-is:             Main.hs
+  main-is:             Benchmark.hs
   ghc-options:         -O2
   default-language:    Haskell2010
   build-depends:       base,
@@ -24,6 +24,22 @@ executable benchmark
                        llrbtree,
                        QuickCheck
   hs-source-dirs:      src
+
+Test-Suite quickcheck
+  type:                exitcode-stdio-1.0
+  main-is:             QuickCheck.hs
+  default-language:    Haskell2010
+  build-depends:       base,
+                       containers,
+                       dequeue,
+                       deque,
+                       hspec,
+                       hashmap,
+                       hashable,
+                       heaps,
+                       llrbtree,
+                       QuickCheck
+  hs-source-dirs:      test src
 
 Test-Suite all_tests
     type:           exitcode-stdio-1.0
