@@ -4,13 +4,12 @@ import Data.Maybe
 import qualified Data.Sequence as D
 import qualified Data.Set as S
 import qualified Data.HashSet as HS   -- (NOTE: from hashmap, not from unordered-containers)
-import qualified BinaryHeap as H -- (NOTE: from heaps, not from heap!).
+import qualified SplayHeap as H -- (NOTE: from heaps, not from heap!).
 import Data.Hashable
 
 dequeue :: D.Seq a -> (a, D.Seq a)
 dequeue sq = let (rest, el) = D.splitAt (D.length sq - 1) sq in (D.index el 0, rest)
 
--- TODO move to Search module
 -- TODO benchmark with other heap implementations. E.g. splay heap, pairing heap, fibonacci heap.
 
 uncons :: Ord a => H.Heap a -> (a, H.Heap a)

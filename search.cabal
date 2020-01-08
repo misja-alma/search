@@ -21,7 +21,8 @@ executable benchmark
                        hashmap,
                        hashable,
                        heaps,
-                       llrbtree
+                       llrbtree,
+                       QuickCheck
   hs-source-dirs:      src
 
 Test-Suite all_tests

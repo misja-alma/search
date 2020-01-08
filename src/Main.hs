@@ -1,6 +1,6 @@
 module Main where
 
-import SearchTest
+import HeapCheck
 
 main :: IO ()
 main = test
