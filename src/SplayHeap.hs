@@ -31,35 +31,29 @@ singleton x = Heap Empty x Empty
 -- TODO problem with Okasaki's implementation is that when repeatedly inserting a new biggest/ smallest element,
 --      the tree becomes essentially linear. This is because either smaller or bigger will return an empty heap every time:
 --      meaning a heap will be formed where one side is always empty.
---      this solution makes things a bit better but still not 100%
+--      this solution makes things a bit better. However it doesn't really show a speedup in practice, I guess because most data is pretty random anyway.
 rebalance :: Ord a => Heap a -> Heap a
 rebalance (Heap (Heap left x' Empty) x Empty)  = Heap left x' (singleton x)
 rebalance (Heap Empty x (Heap Empty x' right)) = Heap (singleton x) x' right
 rebalance h = h
 
 insert :: Ord a => a -> Heap a -> Heap a
-insert x h = rebalance $ Heap (smaller x h) x (bigger x h)
+insert x h = let (smaller, bigger) = partition x h
+             in rebalance $ Heap smaller x bigger
 
--- TODO combine smaller and bigger
-smaller :: Ord a =>  a -> Heap a -> Heap a
-smaller pivot Empty = Empty
-smaller pivot (Heap left x right) =
-   if x > pivot then smaller pivot left
-   else case right of
-           Empty                -> Heap left x Empty
-           Heap left' x' right' ->
-              if x' > pivot then rebalance $ Heap left x (smaller pivot left')
-              else rebalance $ Heap (Heap left x left') x' (smaller pivot right')
-
-bigger :: Ord a => a -> Heap a -> Heap a
-bigger pivot Empty = Empty
-bigger pivot (Heap left x right) =
-   if x <= pivot then bigger pivot right
-   else case left of
-           Empty                -> Heap Empty x right
-           Heap left' x' right' ->
-              if x' <= pivot then rebalance $ Heap (bigger pivot right') x right
-              else rebalance $ Heap (bigger pivot left') x' (Heap right' x right)
+partition :: Ord a => a -> Heap a -> (Heap a, Heap a)
+partition pivot Empty = (Empty, Empty)
+partition pivot t@(Heap left x right) =
+   if x > pivot then
+      case left of
+         Empty  -> (Empty, rebalance t)
+         t2     -> let (smaller, bigger) = partition pivot t2
+                   in (rebalance smaller, rebalance $ Heap bigger x right)
+   else
+     case right of
+        Empty -> (rebalance t, Empty)
+        t2    -> let (smaller, bigger) = partition pivot t2  
+                 in (rebalance $ Heap left x smaller, rebalance bigger)
 
 fromList :: Ord a => [a] -> Heap a
 fromList = foldl (\h x -> insert x h) empty
