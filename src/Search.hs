@@ -4,7 +4,7 @@ import Data.Maybe
 import qualified Data.Sequence as D
 import qualified Data.Set as S
 import qualified Data.HashSet as HS   -- (NOTE: from hashmap, not from unordered-containers)
-import qualified SplayHeap as H -- (NOTE: from heaps, not from heap!).
+import qualified PairingHeap as H -- (NOTE: Heap from heaps, not from heap!).
 import Data.Hashable
 
 dequeue :: D.Seq a -> (a, D.Seq a)

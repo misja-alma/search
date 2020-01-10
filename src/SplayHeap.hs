@@ -29,7 +29,7 @@ singleton :: a -> Heap a
 singleton x = Heap Empty x Empty
 
 -- TODO problem with Okasaki's implementation is that when repeatedly inserting a new biggest/ smallest element,
---      the tree becomes essentially linear. This is because either smaller or bigger will return an empty heap every time:
+--      the heap becomes a linear tree. This is because either smaller or bigger will return an empty heap every time:
 --      meaning a heap will be formed where one side is always empty.
 --      this solution makes things a bit better. However it doesn't really show a speedup in practice, I guess because most data is pretty random anyway.
 rebalance :: Ord a => Heap a -> Heap a
@@ -70,8 +70,8 @@ getMax (Heap _ _ bs) = getMax bs
 deleteMax :: Heap a -> (a, Heap a)
 deleteMax Empty = error "empty heap"
 deleteMax (Heap left x Empty) = (x, left)
-deleteMax (Heap left x (Heap left' x' Empty)) = (x', Heap left x left')
-deleteMax (Heap left x (Heap left' x' right')) =  -- rebalance a bit
+deleteMax (Heap left x (Heap left' x' Empty)) = (x', Heap left x left')  -- rebalance a bit
+deleteMax (Heap left x (Heap left' x' right')) =
    let (m, right'') = deleteMax right'
    in (m, Heap left x (Heap left' x' right''))
 

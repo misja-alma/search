@@ -1,7 +1,7 @@
 module HeapSpec (spec) where
 
 import Test.Hspec
-import SplayHeap
+import PairingHeap
 import qualified Data.Set as Set
 
 test_insert_and_getMax:: Spec

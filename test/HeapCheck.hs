@@ -2,7 +2,7 @@ module HeapCheck (test) where
 
 import Test.QuickCheck
 import qualified Data.Set as Set
-import qualified SplayHeap as H
+import qualified PairingHeap as H
 
 instance (Ord a, Arbitrary a) => Arbitrary (H.Heap a) where
   arbitrary = do
